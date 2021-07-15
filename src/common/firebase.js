@@ -11,10 +11,4 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const root = firebase.database().ref();
-const cars = firebase.database().ref("cars");
-
-export const db = {
-  root,
-  cars,
-};
+export { firebase };

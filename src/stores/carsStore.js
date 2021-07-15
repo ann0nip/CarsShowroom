@@ -1,36 +1,71 @@
-import { observable, toJS, makeObservable, action } from "mobx";
-import { db } from "../common/firebase";
+import { makeAutoObservable } from "mobx";
+import { firebase } from "../common/firebase";
 
-class CarsStore {
+export class CarsStore {
   cars = [];
+  filteredCars = [];
+  carDetails = null;
+  isLoading = true;
   constructor() {
-    makeObservable(this, {
-      cars: observable,
-      add: action,
-    });
-    db.cars.on("value", (snapshot) => {
-      this.cars = snapshot.val();
-    });
+    makeAutoObservable(this);
+    this.loadCars();
   }
 
-  get json() {
-    return toJS(this.cars);
+  sortCars() {
+    this.filteredCars = this.filteredCars.sort((a, b) =>
+      a.model > b.model ? 1 : b.model > a.model ? -1 : 0
+    );
   }
 
-  add = (name) => {
-    const id = db.cars.push().key;
-    this.update(id, name);
-  };
+  filterCars(filter) {
+    const result = this.cars.filter((car) =>
+      car.brand.toUpperCase().includes(filter.toUpperCase())
+    );
+    console.log(`result`, result);
+    this.filteredCars = result;
+  }
 
-  update = (id, name) => {
-    db.cars.update({ [id]: { name } });
-  };
+  loadCars() {
+    firebase
+      .database()
+      .ref("cars")
+      .on("value", (snapshot) => {
+        let result = [];
+        console.log("1");
+        snapshot.forEach((child) => {
+          result.push({ ...child.val(), key: child.key });
+        });
+        console.log(result);
+        this.cars = [...result];
+        this.filterCars("");
+        this.isLoading = false;
+      });
+  }
+
+  getDetails(id) {
+    firebase
+      .database()
+      .ref("cars")
+      .child(id)
+      .once("value", (snapshot) => {
+        console.log(`snapshot.val()`, snapshot.val());
+        this.carDetails = snapshot.val();
+      });
+  }
+
+  add(values) {
+    const id = firebase.database().ref("cars").push().key;
+    this.update(id, values);
+  }
+
+  update(id, values) {
+    firebase
+      .database()
+      .ref("cars")
+      .update({ [id]: { ...values } });
+  }
 
   delete = (id) => {
-    db.cars.child(id).remove();
+    firebase.database().ref("cars").child(id).remove();
   };
-
-  deco;
 }
- 
-export const carsStore = new CarsStore();

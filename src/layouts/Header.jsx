@@ -1,28 +1,21 @@
-import React from 'react'
-import { AppBar,Typography,Toolbar,makeStyles } from '@material-ui/core'
-import CameraIcon from '@material-ui/icons/PhotoCamera';
-// import {Homek} from '@material-ui/icons'
+import React from "react";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
-    icon: {
-      marginRight: theme.spacing(2),
-    },
-  }));
-
-const Header=()=> {
-
-    const classes = useStyles()
-
-    return (
-        <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Cars Showroom
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    )
+export default function Navigation() {
+  return (
+    <AppBar position="absolute">
+      <Toolbar>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+        >
+          Cars Showroom
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
 }
-
-export default Header;
