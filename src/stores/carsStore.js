@@ -6,7 +6,7 @@ export class CarsStore {
   filteredCars = [];
   carDetails = null;
   isLoading = true;
-  itemsPerPage = 1;
+  itemsPerPage = 8;
   pageCount = 1;
   currentPage = 1;
   constructor() {
@@ -76,8 +76,12 @@ export class CarsStore {
         this.cars = [...result];
         this.filterCars("");
         this.calculatePages();
-        this.isLoading = false;
+        this.stopLoading();
       });
+  }
+
+  stopLoading() {
+    this.isLoading = false;
   }
 
   getDetails(id) {
