@@ -17,7 +17,6 @@ export default function EditCarForm({ onFinish, returnPath, oldValues }) {
 
   React.useEffect(() => {
     setValues(oldValues);
-    console.log("oldValues :>> ", oldValues);
   }, [oldValues]);
 
   return (
