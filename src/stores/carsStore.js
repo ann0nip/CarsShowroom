@@ -1,14 +1,44 @@
-import { makeAutoObservable } from "mobx";
 import { firebase } from "../common/firebase";
+import { makeAutoObservable } from "mobx";
 
 export class CarsStore {
   cars = [];
   filteredCars = [];
   carDetails = null;
   isLoading = true;
+  itemsPerPage = 1;
+  pageCount = 1;
+  currentPage = 1;
   constructor() {
     makeAutoObservable(this);
     this.loadCars();
+  }
+
+  getCarsByPage() {
+    if (this.currentPage < this.pageCount) {
+      return this.filteredCars.slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        this.itemsPerPage
+      );
+    } else if (this.currentPage > this.pageCount) {
+      this.currentPage = this.pageCount;
+      return this.filteredCars.slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        this.itemsPerPage
+      );
+    } else {
+      return this.filteredCars.slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        this.filteredCars.length
+      );
+    }
+  }
+
+  calculatePages() {
+    this.pageCount = Math.ceil(this.filteredCars.length / this.itemsPerPage);
+  }
+  changePage(page) {
+    this.currentPage = page;
   }
 
   sortCars() {
@@ -18,11 +48,18 @@ export class CarsStore {
   }
 
   filterCars(filter) {
-    const result = this.cars.filter((car) =>
-      car.brand.toUpperCase().includes(filter.toUpperCase())
-    );
-    console.log(`result`, result);
-    this.filteredCars = result;
+    console.log(`filter`, filter);
+    if (filter) {
+      const result = this.cars.filter((car) =>
+        car.brand
+          ? car.brand.toUpperCase().includes(filter.toUpperCase())
+          : false
+      );
+      this.filteredCars = result;
+    } else {
+      this.filteredCars = this.cars;
+    }
+    this.calculatePages();
   }
 
   loadCars() {
@@ -38,6 +75,7 @@ export class CarsStore {
         console.log(result);
         this.cars = [...result];
         this.filterCars("");
+        this.calculatePages();
         this.isLoading = false;
       });
   }

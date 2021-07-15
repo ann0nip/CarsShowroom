@@ -13,6 +13,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import ClearButton from "@material-ui/icons/Clear";
 import { CircularProgress } from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
 
 const useStyles = makeStyles((theme) => ({
   tools: {
@@ -47,8 +48,12 @@ const HomePage = observer(() => {
   const handleSort = () => {
     carsStore.sortCars();
   };
+  const handlePage = (e, p) => {
+    carsStore.changePage(p);
+  };
   return (
     <>
+      {/* Actions Buttons  */}
       <Grid
         container
         justifyContent="space-between"
@@ -87,13 +92,15 @@ const HomePage = observer(() => {
           </Link>
         </Grid>
       </Grid>
+
+      {/* Items List  */}
       <Grid container spacing={4}>
         {carsStore.isLoading ? (
           <Grid item xs={12} className={classes.loader}>
             <CircularProgress />
           </Grid>
         ) : (
-          carsStore.filteredCars.map((car) => (
+          carsStore.getCarsByPage().map((car) => (
             <Grid item key={car.key} xs={12} sm={6} md={3}>
               <CarItem
                 model={car.model}
@@ -105,6 +112,18 @@ const HomePage = observer(() => {
             </Grid>
           ))
         )}
+      </Grid>
+
+      {/* Paginator */}
+      <br />
+      <br />
+      <Grid container justifyContent="center" spacing={4}>
+        <Pagination
+          color="primary"
+          onChange={handlePage}
+          count={carsStore.pageCount}
+          page={carsStore.currentPage}
+        />
       </Grid>
     </>
   );
