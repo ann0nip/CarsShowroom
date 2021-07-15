@@ -48,7 +48,6 @@ export class CarsStore {
   }
 
   filterCars(filter) {
-    console.log(`filter`, filter);
     if (filter) {
       const result = this.cars.filter((car) =>
         car.brand
@@ -68,11 +67,9 @@ export class CarsStore {
       .ref("cars")
       .on("value", (snapshot) => {
         let result = [];
-        console.log("1");
         snapshot.forEach((child) => {
           result.push({ ...child.val(), key: child.key });
         });
-        console.log(result);
         this.cars = [...result];
         this.filterCars("");
         this.calculatePages();
@@ -90,7 +87,6 @@ export class CarsStore {
       .ref("cars")
       .child(id)
       .once("value", (snapshot) => {
-        console.log(`snapshot.val()`, snapshot.val());
         this.carDetails = snapshot.val();
       });
   }
