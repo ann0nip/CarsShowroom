@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import { createContext } from "react";
 
-import { CarsStore } from "../stores/CarsStore";
+import { CarsStore } from "../stores/carsStore";
 
 const contextValue = {
   carsStore: new CarsStore(),
