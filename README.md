@@ -1,10 +1,10 @@
 # Cars Showroom with React and Firebase
 
-> One paragraph statement about the project.
+> Cars showroom is a simple app built with React, Firebase, MobX and Material UI.
 
-![screenshot](./app_screenshot.png)
+![screenshot1](./screenshots/1.png)
 
-Additional description about the project and its features.
+Cars Showroom lists cars by model, brand. You can also add,edit or delete cars.
 
 ## Built With
 
@@ -17,27 +17,37 @@ Additional description about the project and its features.
 
 [Live Demo Link](https://cars-showroom.netlify.app/)
 
+## Screenshots
+
+![home](./screenshots/1.png)
+![datails](./screenshots/2.png)
+![add](./screenshots/3.png)
+![edit](./screenshots/4.png)
 
 ## Getting Started
 
-**This is an example of how you may give instructions on setting up your project locally.**
-**Modify this file to match your project, remove sections that don't apply. For example: delete the testing section if the currect project doesn't require testing.**
-
-
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-### Setup
+To get a local copy up and running follow these simple steps.
 
 ### Install
 
+1. Clone the repo
+   ```sh
+   git clone https://github.com/AbdelkaderOumrani/CarsShowroom.git
+   ```
+2. Install dependencies
+   ```sh
+   yarn install
+   ```
+
 ### Usage
+
+```sh
+   yarn start
+```
 
 ### Run tests
 
 ### Deployment
-
 
 ## 🤝 Contributing
 
